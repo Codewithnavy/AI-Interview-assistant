@@ -1,11 +1,16 @@
-Project Overview
+# AI-Powered Interview Assistant - Swipe Internship Assignment
+
+## Project Overview
+
 This React application serves as an AI-powered interview assistant with dual interfaces for interviewees and interviewers. The system provides a complete interview experience including resume parsing, dynamic question generation, real-time scoring, and comprehensive candidate management.
 
-Architecture
-Core System Design
+## Architecture
+
+### Core System Design
+
 The application follows a modular architecture with clear separation of concerns:
 
-text
+```
 src/
 ├── components/
 │   ├── common/
@@ -43,32 +48,35 @@ src/
     ├── candidate.ts
     ├── interview.ts
     └── common.ts
-State Management Architecture
+```
+
+### State Management Architecture
+
 The application uses Redux Toolkit with RTK Query for efficient state management:
 
-Candidate Slice: Manages candidate data, profiles, and scores
+- **Candidate Slice**: Manages candidate data, profiles, and scores
+- **Interview Slice**: Handles active interview sessions, questions, and timing
+- **UI Slice**: Controls application state, modals, and navigation
+- **Persistence Layer**: Implements automatic state restoration using redux-persist
 
-Interview Slice: Handles active interview sessions, questions, and timing
+### Data Flow
 
-UI Slice: Controls application state, modals, and navigation
+1. **Resume Processing Pipeline**:
+   Resume Upload → PDF/DOCX Parsing → Field Extraction → Validation → Profile Creation
 
-Persistence Layer: Implements automatic state restoration using redux-persist
+2. **Interview Execution Flow**:
+   Profile Validation → Question Generation → Timer Management → Answer Collection → Scoring → Summary Generation
 
-Data Flow
-Resume Processing Pipeline:
-Resume Upload → PDF/DOCX Parsing → Field Extraction → Validation → Profile Creation
+3. **Real-time Synchronization**:
+   Both tabs maintain synchronized state through Redux, ensuring consistent data across all interfaces.
 
-Interview Execution Flow:
-Profile Validation → Question Generation → Timer Management → Answer Collection → Scoring → Summary Generation
+## Technical Implementation
 
-Real-time Synchronization:
-Both tabs maintain synchronized state through Redux, ensuring consistent data across all interfaces.
+### Resume Processing System
 
-Technical Implementation
-Resume Processing System
 The resume parser utilizes multiple extraction strategies:
 
-typescript
+```typescript
 interface ResumeData {
   name?: string;
   email?: string;
@@ -82,10 +90,13 @@ class ResumeParser {
   async extractFromDOCX(file: File): Promise<ResumeData>
   validateExtractedData(data: ResumeData): ValidationResult
 }
-AI Question Generation Engine
+```
+
+### AI Question Generation Engine
+
 The system implements a structured question generation approach:
 
-typescript
+```typescript
 interface Question {
   id: string;
   text: string;
@@ -100,21 +111,22 @@ class QuestionGenerator {
   getDifficultyProgression(): DifficultyLevel[]
   getTimeLimits(): Record<DifficultyLevel, number>
 }
-Scoring and Assessment
+```
+
+### Scoring and Assessment
+
 The AI scoring engine evaluates responses across multiple dimensions:
 
-Technical accuracy and completeness
+- Technical accuracy and completeness
+- Code quality and best practices
+- Problem-solving approach
+- Communication clarity
 
-Code quality and best practices
+### Timer Management System
 
-Problem-solving approach
-
-Communication clarity
-
-Timer Management System
 Implements precise countdown timers with automatic progression:
 
-typescript
+```typescript
 interface TimerState {
   currentTime: number;
   isActive: boolean;
@@ -128,91 +140,79 @@ class InterviewTimer {
   resume(): void
   reset(): void
 }
-Core Features
-Interviewee Interface
-Resume Upload: Drag-and-drop interface supporting PDF and DOCX formats
+```
 
-Smart Field Collection: Automatic extraction with chatbot-driven gap filling
+## Core Features
 
-Interactive Chat: Real-time conversation flow with AI interviewer
+### Interviewee Interface
 
-Progress Tracking: Visual indicators showing interview completion status
+- **Resume Upload**: Drag-and-drop interface supporting PDF and DOCX formats
+- **Smart Field Collection**: Automatic extraction with chatbot-driven gap filling
+- **Interactive Chat**: Real-time conversation flow with AI interviewer
+- **Progress Tracking**: Visual indicators showing interview completion status
+- **Timer Display**: Prominent countdown with color-coded urgency levels
 
-Timer Display: Prominent countdown with color-coded urgency levels
+### Interviewer Dashboard
 
-Interviewer Dashboard
-Candidate Management: Comprehensive list with scoring and status indicators
+- **Candidate Management**: Comprehensive list with scoring and status indicators
+- **Detailed Analytics**: Individual candidate performance breakdowns
+- **Search and Filter**: Advanced filtering by score, completion status, and date
+- **Interview History**: Complete chat logs and response analysis
+- **Bulk Operations**: Export capabilities for candidate data
 
-Detailed Analytics: Individual candidate performance breakdowns
+### Data Persistence Strategy
 
-Search and Filter: Advanced filtering by score, completion status, and date
-
-Interview History: Complete chat logs and response analysis
-
-Bulk Operations: Export capabilities for candidate data
-
-Data Persistence Strategy
 The application implements multi-layered persistence:
 
-Redux Persist: Automatic state hydration and dehydration
+1. **Redux Persist**: Automatic state hydration and dehydration
+2. **IndexedDB Integration**: Large file storage for resumes and chat history
+3. **Session Recovery**: Intelligent detection and restoration of incomplete sessions
+4. **Offline Support**: Graceful handling of network disruptions
 
-IndexedDB Integration: Large file storage for resumes and chat history
+### Error Handling Framework
 
-Session Recovery: Intelligent detection and restoration of incomplete sessions
-
-Offline Support: Graceful handling of network disruptions
-
-Error Handling Framework
 Comprehensive error management across all system components:
 
-File Upload Errors: Invalid formats, size limitations, parsing failures
+- **File Upload Errors**: Invalid formats, size limitations, parsing failures
+- **Network Errors**: API timeouts, connection issues, retry mechanisms
+- **Validation Errors**: Missing fields, invalid data formats
+- **Session Errors**: State corruption, timer failures, unexpected interruptions
 
-Network Errors: API timeouts, connection issues, retry mechanisms
+## Quality Assurance
 
-Validation Errors: Missing fields, invalid data formats
+### Performance Optimization
 
-Session Errors: State corruption, timer failures, unexpected interruptions
+- **Code Splitting**: Dynamic imports for optimal bundle sizes
+- **Lazy Loading**: Component-level lazy loading for improved initial load
+- **Memoization**: Strategic use of React.memo and useMemo for expensive operations
+- **Virtual Scrolling**: Efficient rendering of large candidate lists
 
-Quality Assurance
-Performance Optimization
-Code Splitting: Dynamic imports for optimal bundle sizes
+### Accessibility Compliance
 
-Lazy Loading: Component-level lazy loading for improved initial load
+- **WCAG 2.1 Standards**: Full compliance with accessibility guidelines
+- **Keyboard Navigation**: Complete keyboard-only operation support
+- **Screen Reader Support**: Semantic HTML and ARIA labels
+- **Color Contrast**: High contrast ratios for visual accessibility
 
-Memoization: Strategic use of React.memo and useMemo for expensive operations
+### Security Considerations
 
-Virtual Scrolling: Efficient rendering of large candidate lists
+- **File Validation**: Strict file type and size validation
+- **XSS Protection**: Input sanitization and output encoding
+- **Data Privacy**: Local storage encryption for sensitive information
+- **Session Security**: Secure session management and timeout handling
 
-Accessibility Compliance
-WCAG 2.1 Standards: Full compliance with accessibility guidelines
+## Development Setup
 
-Keyboard Navigation: Complete keyboard-only operation support
+### Prerequisites
 
-Screen Reader Support: Semantic HTML and ARIA labels
+- Node.js 18+ and npm/yarn
+- Modern browser with ES2020 support
+- PDF parsing libraries (pdf-parse, mammoth)
+- AI service integration (OpenAI API or local model)
 
-Color Contrast: High contrast ratios for visual accessibility
+### Installation and Configuration
 
-Security Considerations
-File Validation: Strict file type and size validation
-
-XSS Protection: Input sanitization and output encoding
-
-Data Privacy: Local storage encryption for sensitive information
-
-Session Security: Secure session management and timeout handling
-
-Development Setup
-Prerequisites
-Node.js 18+ and npm/yarn
-
-Modern browser with ES2020 support
-
-PDF parsing libraries (pdf-parse, mammoth)
-
-AI service integration (OpenAI API or local model)
-
-Installation and Configuration
-bash
+```bash
 # Clone repository
 git clone <repository-url>
 cd ai-interview-assistant
@@ -226,8 +226,11 @@ cp .env.example .env
 
 # Start development server
 npm run dev
-Build and Deployment
-bash
+```
+
+### Build and Deployment
+
+```bash
 # Production build
 npm run build
 
@@ -236,24 +239,22 @@ npm run preview
 
 # Testing suite
 npm run test
-Deployment Architecture
+```
+
+## Deployment Architecture
+
 The application supports multiple deployment strategies:
 
-Static Hosting: Netlify, Vercel, or AWS S3 with CloudFront
+- **Static Hosting**: Netlify, Vercel, or AWS S3 with CloudFront
+- **Container Deployment**: Docker containerization for scalable deployments
+- **Progressive Web App**: Service worker implementation for offline functionality
+- **CDN Integration**: Optimized asset delivery through content delivery networks
 
-Container Deployment: Docker containerization for scalable deployments
+## Monitoring and Analytics
 
-Progressive Web App: Service worker implementation for offline functionality
-
-CDN Integration: Optimized asset delivery through content delivery networks
-
-Monitoring and Analytics
-Performance Tracking: Core Web Vitals monitoring
-
-Error Reporting: Comprehensive error logging and reporting
-
-Usage Analytics: User interaction patterns and feature adoption
-
-System Health: Real-time monitoring of critical system components
+- **Performance Tracking**: Core Web Vitals monitoring
+- **Error Reporting**: Comprehensive error logging and reporting
+- **Usage Analytics**: User interaction patterns and feature adoption
+- **System Health**: Real-time monitoring of critical system components
 
 This architecture ensures a robust, scalable, and maintainable AI-powered interview assistant that meets all specified requirements while providing an exceptional user experience for both candidates and interviewers.
